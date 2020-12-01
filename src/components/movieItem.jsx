@@ -1,7 +1,6 @@
 import React from "react";
 
 function MovieItem(props) {
-  console.log(props);
   return (
     <tr>
       <th>{props.title}</th>
