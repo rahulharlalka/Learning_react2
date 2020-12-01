@@ -5,8 +5,8 @@ import MovieTable from "./components/movieTable.jsx";
 function App() {
   return (
     <div>
-      <Movies></Movies>
-      <MovieTable></MovieTable>
+      <Movies />
+      <MovieTable />
     </div>
   );
 }

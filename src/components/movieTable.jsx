@@ -1,29 +1,24 @@
-import React from "react";
-import movies from "../services/fakeMovieService";
+import React, { useState } from "react";
+import { getMovies } from "../services/fakeMovieService";
+import MovieItem from "./movieItem.jsx";
 
 function MovieTable() {
+  const [movies, setMovies] = useState(getMovies());
+
   return (
     <table className="table">
       <thead>
         <tr>
-          <th>Genre</th>
           <th>Title</th>
+          <th>Genre</th>
           <th>Stock</th>
           <th>Rate</th>
           <th></th>
         </tr>
       </thead>
       <tbody>
-        {movies.map((movie, key) => (
-          <tr key={key}>
-            <th>{movie.title}</th>
-            <td>{movie.genre}</td>
-            <td>{movie.numberInStock}</td>
-            <td>{movie.dailyRentalRate}</td>
-            <td>
-              <button className="btn btn-warning">Delete</button>
-            </td>
-          </tr>
+        {movies.map((movie, index) => (
+          <MovieItem key={index} moviename={movie} />
         ))}
       </tbody>
     </table>
