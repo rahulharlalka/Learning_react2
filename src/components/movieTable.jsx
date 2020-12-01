@@ -1,12 +1,26 @@
 import React, { useState } from "react";
 import { getMovies } from "../services/fakeMovieService";
 import MovieItem from "./movieItem.jsx";
+import Pagination from "./common/pagination";
 
 function MovieTable() {
   const [movies, setMovies] = useState(getMovies());
+  const [pageSize, setPageSize] = useState(4);
 
   function handleDelete(movie) {
     const newMovies = movies.filter((m) => m._id !== movie._id);
+    setMovies(newMovies);
+  }
+
+  function handlePageChange(page) {
+    console.log(page);
+  }
+
+  function handleLike(movie) {
+    const newMovies = [...movies];
+    const index = newMovies.indexOf(movie);
+    newMovies[index] = { ...newMovies[index] };
+    newMovies[index].liked = !newMovies[index].liked;
     setMovies(newMovies);
   }
 
@@ -28,6 +42,7 @@ function MovieTable() {
             <th>Stock</th>
             <th>Rate</th>
             <th></th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
@@ -40,11 +55,17 @@ function MovieTable() {
                 numberInStock={movie.numberInStock}
                 dailyRentalRate={movie.dailyRentalRate}
                 handleDelete={handleDelete}
+                handleLike={handleLike}
               />
             );
           })}
         </tbody>
       </table>
+      <Pagination
+        itemsCount={movies.length}
+        pageSize={pageSize}
+        onPageChnage={handlePageChange}
+      />
     </React.Fragment>
   );
 }

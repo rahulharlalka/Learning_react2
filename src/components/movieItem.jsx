@@ -1,4 +1,5 @@
 import React from "react";
+import Like from "./common/Like.jsx";
 
 function MovieItem(props) {
   return (
@@ -7,6 +8,14 @@ function MovieItem(props) {
       <td>{props.genre.name}</td>
       <td>{props.numberInStock}</td>
       <td>{props.dailyRentalRate}</td>
+      <td>
+        <Like
+          key={props.movie._id}
+          liked={props.movie.liked}
+          onClick={props.handleLike}
+          movie={props.movie}
+        />
+      </td>
       <td>
         <button
           onClick={() => props.handleDelete(props.movie)}
