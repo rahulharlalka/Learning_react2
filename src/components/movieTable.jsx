@@ -2,27 +2,31 @@ import React, { useState } from "react";
 import { getMovies } from "../services/fakeMovieService";
 import MovieItem from "./movieItem.jsx";
 import Pagination from "./common/pagination";
+import { paginate } from "../utils/paginate.js";
 
 function MovieTable() {
-  const [movies, setMovies] = useState(getMovies());
-  const [pageSize, setPageSize] = useState(4);
+  const [allMovies, setMovies] = useState(getMovies());
+  const pageSize = 4;
+  const [currentPage, setCurrentPage] = useState(1);
 
   function handleDelete(movie) {
-    const newMovies = movies.filter((m) => m._id !== movie._id);
+    const newMovies = allMovies.filter((m) => m._id !== movie._id);
     setMovies(newMovies);
   }
 
   function handlePageChange(page) {
-    console.log(page);
+    setCurrentPage(page);
   }
 
   function handleLike(movie) {
-    const newMovies = [...movies];
+    const newMovies = [...allMovies];
     const index = newMovies.indexOf(movie);
     newMovies[index] = { ...newMovies[index] };
     newMovies[index].liked = !newMovies[index].liked;
     setMovies(newMovies);
   }
+
+  const movies = paginate(allMovies, currentPage, pageSize);
 
   if (movies.length === 0)
     return <h1 className="m-2">There are no movies in the database</h1>;
@@ -62,9 +66,10 @@ function MovieTable() {
         </tbody>
       </table>
       <Pagination
-        itemsCount={movies.length}
+        itemsCount={allMovies.length}
         pageSize={pageSize}
-        onPageChnage={handlePageChange}
+        currentPage={currentPage}
+        onPageChange={handlePageChange}
       />
     </React.Fragment>
   );
