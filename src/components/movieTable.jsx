@@ -3,11 +3,15 @@ import { getMovies } from "../services/fakeMovieService";
 import MovieItem from "./movieItem.jsx";
 import Pagination from "./common/pagination";
 import { paginate } from "../utils/paginate.js";
+import ListGroup from "./common/ListGroup.jsx";
+import { getGenres } from "../services/fakeGenreService";
 
 function MovieTable() {
   const [allMovies, setMovies] = useState(getMovies());
   const pageSize = 4;
   const [currentPage, setCurrentPage] = useState(1);
+  const [genres, setGenres] = useState(getGenres());
+  const [selectedGenre, setCurrentGenre] = useState("");
 
   function handleDelete(movie) {
     const newMovies = allMovies.filter((m) => m._id !== movie._id);
@@ -26,52 +30,71 @@ function MovieTable() {
     setMovies(newMovies);
   }
 
-  const movies = paginate(allMovies, currentPage, pageSize);
+  function handleGenreSelect(genre) {
+    setCurrentGenre(genre);
+    setCurrentPage(1);
+  }
+
+  const filtered =
+    selectedGenre && selectedGenre._id
+      ? allMovies.filter((m) => m.genre._id === selectedGenre._id)
+      : allMovies;
+
+  const movies = paginate(filtered, currentPage, pageSize);
 
   if (movies.length === 0)
     return <h1 className="m-2">There are no movies in the database</h1>;
 
   return (
-    <React.Fragment>
-      <div>
-        <h2 className="m-3">
-          There are {movies.length} movies in the database
-        </h2>
+    <div className="row">
+      <div className="col-3">
+        <ListGroup
+          items={genres}
+          selectedItem={selectedGenre}
+          onItemSelect={handleGenreSelect}
+        />
       </div>
-      <table className="table">
-        <thead>
-          <tr>
-            <th>Title</th>
-            <th>Genre</th>
-            <th>Stock</th>
-            <th>Rate</th>
-            <th></th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
-          {movies.map((movie) => {
-            return (
-              <MovieItem
-                movie={movie}
-                title={movie.title}
-                genre={movie.genre}
-                numberInStock={movie.numberInStock}
-                dailyRentalRate={movie.dailyRentalRate}
-                handleDelete={handleDelete}
-                handleLike={handleLike}
-              />
-            );
-          })}
-        </tbody>
-      </table>
-      <Pagination
-        itemsCount={allMovies.length}
-        pageSize={pageSize}
-        currentPage={currentPage}
-        onPageChange={handlePageChange}
-      />
-    </React.Fragment>
+      <div className="col">
+        <div>
+          <h2 className="m-3">
+            There are {filtered.length} movies in the database
+          </h2>
+        </div>
+        <table className="table">
+          <thead>
+            <tr>
+              <th>Title</th>
+              <th>Genre</th>
+              <th>Stock</th>
+              <th>Rate</th>
+              <th></th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            {movies.map((movie) => {
+              return (
+                <MovieItem
+                  movie={movie}
+                  title={movie.title}
+                  genre={movie.genre}
+                  numberInStock={movie.numberInStock}
+                  dailyRentalRate={movie.dailyRentalRate}
+                  handleDelete={handleDelete}
+                  handleLike={handleLike}
+                />
+              );
+            })}
+          </tbody>
+        </table>
+        <Pagination
+          itemsCount={filtered.length}
+          pageSize={pageSize}
+          currentPage={currentPage}
+          onPageChange={handlePageChange}
+        />
+      </div>
+    </div>
   );
 }
 
