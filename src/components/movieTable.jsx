@@ -10,7 +10,7 @@ function MovieTable() {
   const [allMovies, setMovies] = useState(getMovies());
   const pageSize = 4;
   const [currentPage, setCurrentPage] = useState(1);
-  const [genres, setGenres] = useState(getGenres());
+  const [genres, setGenres] = useState([{ name: "AllGenres" }, ...getGenres()]);
   const [selectedGenre, setCurrentGenre] = useState("");
 
   function handleDelete(movie) {
