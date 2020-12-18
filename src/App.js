@@ -1,10 +1,10 @@
 import React from "react";
-import MovieTable from "./components/movieTable.jsx";
+import Movies from "./components/movies.jsx";
 
 function App() {
   return (
     <div>
-      <MovieTable />
+      <Movies />
     </div>
   );
 }

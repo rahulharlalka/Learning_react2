@@ -6,7 +6,7 @@ import { paginate } from "../utils/paginate.js";
 import ListGroup from "./common/ListGroup.jsx";
 import { getGenres } from "../services/fakeGenreService";
 
-function MovieTable() {
+function Movies() {
   const [allMovies, setMovies] = useState(getMovies());
   const pageSize = 4;
   const [currentPage, setCurrentPage] = useState(1);
@@ -98,4 +98,4 @@ function MovieTable() {
   );
 }
 
-export default MovieTable;
+export default Movies;
