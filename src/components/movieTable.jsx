@@ -2,15 +2,27 @@ import React from "react";
 import MovieItem from "./movieItem.jsx";
 
 function MovieTable(props) {
-  const { movies, onDelete, onLike, onSort } = props;
+  const { movies, sortColumn, onDelete, onLike, onSort } = props;
+
+  function raiseSort(path) {
+    const newSortColumn = { ...sortColumn };
+    if (sortColumn.path === path)
+      newSortColumn.order = newSortColumn.order === "asc" ? "desc" : "asc";
+    else {
+      newSortColumn.path = path;
+      newSortColumn.order = "asc";
+    }
+    onSort(newSortColumn);
+  }
+
   return (
     <table className="table">
       <thead>
         <tr>
-          <th onClick={() => onSort("title")}>Title</th>
-          <th onClick={() => onSort("genre.name")}>Genre</th>
-          <th onClick={() => onSort("numberInStock")}>Stock</th>
-          <th onClick={() => onSort("dailyRentalRate")}>Rate</th>
+          <th onClick={() => raiseSort("title")}>Title</th>
+          <th onClick={() => raiseSort("genre.name")}>Genre</th>
+          <th onClick={() => raiseSort("numberInStock")}>Stock</th>
+          <th onClick={() => raiseSort("dailyRentalRate")}>Rate</th>
           <th></th>
           <th></th>
         </tr>

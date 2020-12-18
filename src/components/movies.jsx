@@ -40,16 +40,8 @@ function Movies() {
     setCurrentPage(1);
   }
 
-  function handleSort(path) {
-    const newSortCOlumn = { ...sortColumn };
-    if (sortColumn.path === path)
-      newSortCOlumn.order = newSortCOlumn.order === "asc" ? "desc" : "asc";
-    else {
-      newSortCOlumn.path = path;
-      newSortCOlumn.order = "asc";
-    }
-
-    setSortColumn(newSortCOlumn);
+  function handleSort(newSortColumn) {
+    setSortColumn(newSortColumn);
   }
 
   const filtered =
@@ -81,6 +73,7 @@ function Movies() {
         </div>
         <MovieTable
           movies={movies}
+          sortColumn={sortColumn}
           onDelete={handleDelete}
           onLike={handleLike}
           onSort={handleSort}
