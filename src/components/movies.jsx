@@ -1,17 +1,22 @@
 import React, { useState } from "react";
 import { getMovies } from "../services/fakeMovieService";
-import MovieItem from "./movieItem.jsx";
 import Pagination from "./common/pagination";
 import { paginate } from "../utils/paginate.js";
 import ListGroup from "./common/ListGroup.jsx";
 import { getGenres } from "../services/fakeGenreService";
+import MovieTable from "./movieTable.jsx";
+import _ from "lodash";
 
 function Movies() {
   const [allMovies, setMovies] = useState(getMovies());
   const pageSize = 4;
   const [currentPage, setCurrentPage] = useState(1);
-  const [genres, setGenres] = useState([{ name: "AllGenres" }, ...getGenres()]);
+  const [genres, setGenres] = useState([
+    { _id: "", name: "AllGenres" },
+    ...getGenres(),
+  ]);
   const [selectedGenre, setCurrentGenre] = useState("");
+  const [sortColumn, setSortColumn] = useState({ path: "title", order: "asc" });
 
   function handleDelete(movie) {
     const newMovies = allMovies.filter((m) => m._id !== movie._id);
@@ -35,12 +40,26 @@ function Movies() {
     setCurrentPage(1);
   }
 
+  function handleSort(path) {
+    const newSortCOlumn = { ...sortColumn };
+    if (sortColumn.path === path)
+      newSortCOlumn.order = newSortCOlumn.order === "asc" ? "desc" : "asc";
+    else {
+      newSortCOlumn.path = path;
+      newSortCOlumn.order = "asc";
+    }
+
+    setSortColumn(newSortCOlumn);
+  }
+
   const filtered =
     selectedGenre && selectedGenre._id
       ? allMovies.filter((m) => m.genre._id === selectedGenre._id)
       : allMovies;
 
-  const movies = paginate(filtered, currentPage, pageSize);
+  const sorted = _.orderBy(filtered, [sortColumn.path], [sortColumn.order]);
+
+  const movies = paginate(sorted, currentPage, pageSize);
 
   if (movies.length === 0)
     return <h1 className="m-2">There are no movies in the database</h1>;
@@ -60,33 +79,12 @@ function Movies() {
             There are {filtered.length} movies in the database
           </h2>
         </div>
-        <table className="table">
-          <thead>
-            <tr>
-              <th>Title</th>
-              <th>Genre</th>
-              <th>Stock</th>
-              <th>Rate</th>
-              <th></th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            {movies.map((movie) => {
-              return (
-                <MovieItem
-                  movie={movie}
-                  title={movie.title}
-                  genre={movie.genre}
-                  numberInStock={movie.numberInStock}
-                  dailyRentalRate={movie.dailyRentalRate}
-                  handleDelete={handleDelete}
-                  handleLike={handleLike}
-                />
-              );
-            })}
-          </tbody>
-        </table>
+        <MovieTable
+          movies={movies}
+          onDelete={handleDelete}
+          onLike={handleLike}
+          onSort={handleSort}
+        />
         <Pagination
           itemsCount={filtered.length}
           pageSize={pageSize}

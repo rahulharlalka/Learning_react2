@@ -10,7 +10,7 @@ function ListGroup(props) {
   } = props;
 
   return (
-    <ul class="list-group m-2">
+    <ul className="list-group m-2">
       {items.map((item) => {
         return (
           <li
