@@ -1,6 +1,7 @@
 import React from "react";
-import MovieItem from "./movieItem.jsx";
 import TableHeader from "./common/TableHeader.jsx";
+import TableBody from "./common/TableBody.jsx";
+import Like from "./common/Like.jsx";
 
 function MovieTable(props) {
   const { movies, sortColumn, onDelete, onLike, onSort } = props;
@@ -10,29 +11,34 @@ function MovieTable(props) {
     { path: "genre.name", label: "Genre" },
     { path: "numberInStock", label: "Stock" },
     { path: "dailyRentalRate", label: "Rate" },
-    { key: "like" },
-    { key: "delete" },
+    {
+      key: "like",
+      content: (movie) => (
+        <Like liked={movie.liked} onClick={() => props.onLike(movie)} />
+      ),
+    },
+    {
+      key: "delete",
+      content: (movie) => (
+        <button
+          onClick={() => props.onDelete(movie)}
+          className="btn btn-danger btn-sm"
+        >
+          Delete
+        </button>
+      ),
+    },
   ];
 
   return (
     <table className="table">
       <TableHeader columns={columns} sortColumn={sortColumn} onSort={onSort} />
-
-      <tbody>
-        {movies.map((movie) => {
-          return (
-            <MovieItem
-              movie={movie}
-              title={movie.title}
-              genre={movie.genre}
-              numberInStock={movie.numberInStock}
-              dailyRentalRate={movie.dailyRentalRate}
-              handleDelete={onDelete}
-              handleLike={onLike}
-            />
-          );
-        })}
-      </tbody>
+      <TableBody
+        data={movies}
+        columns={columns}
+        onDelete={onDelete}
+        onLike={onLike}
+      />
     </table>
   );
 }
