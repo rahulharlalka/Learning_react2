@@ -13,9 +13,11 @@ const TableBody = (props) => {
   return (
     <tbody>
       {data.map((item) => (
-        <tr>
+        <tr key={item._id}>
           {columns.map((column) => (
-            <td>{renderCell(item, column)}</td>
+            <td key={item._id + (column.path || column.key)}>
+              {renderCell(item, column)}
+            </td>
           ))}
         </tr>
       ))}

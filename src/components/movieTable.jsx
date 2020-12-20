@@ -4,7 +4,7 @@ import TableBody from "./common/TableBody.jsx";
 import Like from "./common/Like.jsx";
 
 function MovieTable(props) {
-  const { movies, sortColumn, onDelete, onLike, onSort } = props;
+  const { movies, sortColumn, onSort } = props;
 
   const columns = [
     { path: "title", label: "Title" },
@@ -33,12 +33,7 @@ function MovieTable(props) {
   return (
     <table className="table">
       <TableHeader columns={columns} sortColumn={sortColumn} onSort={onSort} />
-      <TableBody
-        data={movies}
-        columns={columns}
-        onDelete={onDelete}
-        onLike={onLike}
-      />
+      <TableBody data={movies} columns={columns} />
     </table>
   );
 }
