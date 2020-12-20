@@ -1,6 +1,5 @@
 import React from "react";
-import TableHeader from "./common/TableHeader.jsx";
-import TableBody from "./common/TableBody.jsx";
+import Table from "./common/Table.jsx";
 import Like from "./common/Like.jsx";
 
 function MovieTable(props) {
@@ -31,10 +30,12 @@ function MovieTable(props) {
   ];
 
   return (
-    <table className="table">
-      <TableHeader columns={columns} sortColumn={sortColumn} onSort={onSort} />
-      <TableBody data={movies} columns={columns} />
-    </table>
+    <Table
+      columns={columns}
+      sortColumn={sortColumn}
+      onSort={onSort}
+      data={movies}
+    />
   );
 }
 
