@@ -3,9 +3,26 @@ import Input from "./common/Input.jsx";
 
 function LoginForm() {
   const [account, setAccount] = useState({ username: "", password: "" });
+  const [errors, setErrors] = useState({});
+
+  function validate() {
+    const newErrors = {};
+
+    if (account.username.trim() === "")
+      newErrors.username = "username is required";
+
+    if (account.password.trim() === "")
+      newErrors.password = "password is required";
+
+    return Object.keys(newErrors).length === 0 ? null : newErrors;
+  }
 
   function handleSubmit(e) {
     e.preventDefault();
+    const newErrors = validate();
+    console.log(newErrors);
+    setErrors(newErrors);
+    if (newErrors) return;
 
     console.log("submitted");
   }
