@@ -17,20 +17,34 @@ function LoginForm() {
     return Object.keys(newErrors).length === 0 ? null : newErrors;
   }
 
+  function validateProperty(input) {
+    if (input.name === "username") {
+      if (input.value.trim() === "") return "username is required";
+    }
+
+    if (input.name === "password") {
+      if (input.value.trim() === "") return "password is required";
+    }
+  }
+
   function handleSubmit(e) {
     e.preventDefault();
     const newErrors = validate();
-    console.log(newErrors);
+
     setErrors(newErrors || {});
     if (newErrors) return;
-
-    console.log("submitted");
   }
 
   function handleChange(e) {
+    const newError = { ...errors };
+    const errorMsg = validateProperty(e.currentTarget);
+    if (errorMsg) newError[e.currentTarget.name] = errorMsg;
+    else delete newError[e.currentTarget.name];
+
     const newAccount = { ...account };
     newAccount[e.currentTarget.name] = e.currentTarget.value;
     setAccount(newAccount);
+    setErrors(newError);
   }
 
   return (
