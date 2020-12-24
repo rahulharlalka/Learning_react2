@@ -21,7 +21,7 @@ function LoginForm() {
     e.preventDefault();
     const newErrors = validate();
     console.log(newErrors);
-    setErrors(newErrors);
+    setErrors(newErrors || {});
     if (newErrors) return;
 
     console.log("submitted");
@@ -42,13 +42,16 @@ function LoginForm() {
           label="Username"
           value={account.username}
           onChange={handleChange}
+          error={errors.username}
         />
         <Input
           name="password"
           label="Password"
           value={account.password}
           onChange={handleChange}
+          error={errors.password}
         />
+
         <button className="btn btn-primary">Login</button>
       </form>
     </div>
