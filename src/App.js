@@ -6,6 +6,7 @@ import NotFound from "./components/NotFound.jsx";
 import { Route, Redirect, Switch } from "react-router-dom";
 import NavBar from "./components/NavBar.jsx";
 import MovieForm from "./components/MovieForm";
+import LoginForm from "./components/LoginForm";
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
       <NavBar />
       <main className="container">
         <Switch>
+          <Route path="/login" component={LoginForm} />
           <Route path="/movies/:id" component={MovieForm} />
           <Route path="/movies" component={Movies}></Route>
           <Route path="/customers" component={Customers}></Route>
