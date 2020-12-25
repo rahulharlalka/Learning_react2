@@ -6,6 +6,7 @@ import ListGroup from "./common/ListGroup.jsx";
 import { getGenres } from "../services/fakeGenreService";
 import MovieTable from "./movieTable.jsx";
 import _ from "lodash";
+import { Link } from "react-router-dom";
 
 function Movies() {
   const [allMovies, setMovies] = useState(getMovies());
@@ -72,7 +73,13 @@ function Movies() {
       </div>
       <div className="col">
         <div>
-          <button className="btn btn-primary">New Movie</button>
+          <Link
+            className="btn btn-primary"
+            to="/movies/new"
+            style={{ marginBottom: 20 }}
+          >
+            New Movie
+          </Link>
         </div>
         <div>
           <h2 className="m-3">There are {totalCount} movies in the database</h2>
