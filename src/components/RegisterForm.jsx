@@ -3,7 +3,7 @@ import Input from "./common/Input.jsx";
 import Joi from "joi-browser";
 
 function RegisterForm() {
-  const [account, setAccount] = useState({
+  const [data, setData] = useState({
     username: "",
     password: "",
     name: "",
@@ -17,7 +17,7 @@ function RegisterForm() {
   };
 
   function validate() {
-    const result = Joi.validate(account, schema, { abortEarly: false });
+    const result = Joi.validate(data, schema, { abortEarly: false });
     if (!result.error) return null;
     const newErrors = {};
     for (let item of result.error.details)
@@ -46,9 +46,9 @@ function RegisterForm() {
     if (errorMsg) newError[e.currentTarget.name] = errorMsg;
     else delete newError[e.currentTarget.name];
 
-    const newAccount = { ...account };
+    const newAccount = { ...data };
     newAccount[e.currentTarget.name] = e.currentTarget.value;
-    setAccount(newAccount);
+    setData(newAccount);
     setErrors(newError);
   }
 
@@ -59,14 +59,14 @@ function RegisterForm() {
         <Input
           name="username"
           label="Username"
-          value={account.username}
+          value={data.username}
           onChange={handleChange}
           error={errors.username}
         />
         <Input
           name="password"
           label="Password"
-          value={account.password}
+          value={data.password}
           onChange={handleChange}
           error={errors.password}
         />
@@ -74,7 +74,7 @@ function RegisterForm() {
         <Input
           name="name"
           label="Name"
-          value={account.name}
+          value={data.name}
           onChange={handleChange}
           error={errors.name}
         />
