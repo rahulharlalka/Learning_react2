@@ -72,6 +72,9 @@ function Movies() {
       </div>
       <div className="col">
         <div>
+          <button className="btn btn-primary">New Movie</button>
+        </div>
+        <div>
           <h2 className="m-3">There are {totalCount} movies in the database</h2>
         </div>
         <MovieTable
